@@ -31,17 +31,17 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz", { silent = true, desc = "Scroll up and c
 -- File path copying functions
 vim.keymap.set("n", "<leader>yp", function()
   vim.cmd("let @+ = expand('%:p')")
-  vim.notify("Copied full path: " .. vim.fn.expand('%:p'))
+  vim.notify("Copied full path: " .. vim.fn.expand("%:p"))
 end, { desc = "Copy full file path" })
 
 vim.keymap.set("n", "<leader>yt", function()
   vim.cmd("let @+ = expand('%:t')")
-  vim.notify("Copied filename: " .. vim.fn.expand('%:t'))
+  vim.notify("Copied filename: " .. vim.fn.expand("%:t"))
 end, { desc = "Copy filename" })
 
 vim.keymap.set("n", "<leader>yd", function()
   vim.cmd("let @+ = expand('%:p:h')")
-  vim.notify("Copied directory: " .. vim.fn.expand('%:p:h'))
+  vim.notify("Copied directory: " .. vim.fn.expand("%:p:h"))
 end, { desc = "Copy directory path" })
 
 -- Move lines in visual mode
@@ -59,9 +59,36 @@ vim.keymap.set("n", "<S-Up>", "<Nop>", { silent = true })
 
 -- GitHub integration
 local function open_in_github()
-  local file = vim.fn.expand("%")
+  local file = vim.fn.expand("%:p")
   local line = vim.fn.line(".")
-  local command = "gh browse " .. file .. ":" .. line
+
+  -- Find the git root directory from the current file's location
+  local git_root =
+    vim.fn.systemlist("cd " .. vim.fn.shellescape(vim.fn.expand("%:p:h")) .. " && git rev-parse --show-toplevel")[1]
+
+  if vim.v.shell_error ~= 0 then
+    vim.notify("Not in a git repository", vim.log.levels.ERROR)
+    return
+  end
+
+  -- Get the current branch name
+  local branch = vim.fn.systemlist("cd " .. vim.fn.shellescape(git_root) .. " && git branch --show-current")[1]
+
+  -- Get the relative path from git root
+  local relative_path = vim.fn.fnamemodify(file, ":s?" .. git_root .. "??")
+  if relative_path:sub(1, 1) == "/" then
+    relative_path = relative_path:sub(2)
+  end
+
+  -- Change to the git root directory and run gh browse with branch
+  local command = "cd "
+    .. vim.fn.shellescape(git_root)
+    .. " && gh browse "
+    .. vim.fn.shellescape(relative_path)
+    .. ":"
+    .. line
+    .. " --branch "
+    .. vim.fn.shellescape(branch)
   vim.cmd("!" .. command)
 end
 
@@ -148,3 +175,25 @@ vim.keymap.set("n", "<leader>dp", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { d
 -- Center screen after jump commands
 vim.keymap.set("n", "<C-o>", "<C-o>zz", { silent = true })
 vim.keymap.set("n", "<C-i>", "<C-i>zz", { silent = true })
+
+-- Project-wide find and replace keymaps
+vim.keymap.set("n", "<leader>sr", function()
+  local input = vim.fn.input("Find/Replace pattern (%s/search/replace/flags): ")
+  if input ~= "" then
+    vim.cmd("ProjectFindReplace " .. input)
+  end
+end, { desc = "Project find/replace" })
+
+vim.keymap.set("n", "<leader>sf", function()
+  local input = vim.fn.input("Search term: ")
+  if input ~= "" then
+    vim.cmd("ProjectFind " .. input)
+  end
+end, { desc = "Project search" })
+
+vim.keymap.set("n", "<leader>sR", function()
+  local input = vim.fn.input("Replace All pattern (%s/search/replace/flags): ")
+  if input ~= "" then
+    vim.cmd("ProjectReplaceAll " .. input)
+  end
+end, { desc = "Project replace all (with confirmation)" })

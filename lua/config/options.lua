@@ -10,3 +10,13 @@ vim.opt.wrap = false -- Disable line wrapping
 vim.opt.swapfile = false -- Disable swap files
 vim.opt.smartcase = true -- Smart case searching
 vim.opt.clipboard = "unnamedplus" -- Use system clipboard
+
+-- Disable smooth scrolling animation
+vim.g.snacks_animate_scroll = false
+
+-- Enable auto-reload of files when they change
+vim.o.autoread = true
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+  command = "if mode() != 'c' | checktime | endif",
+  pattern = "*",
+})
