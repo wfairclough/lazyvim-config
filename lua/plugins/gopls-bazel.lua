@@ -1,0 +1,55 @@
+-- Custom gopls configuration with Bazel support
+return {
+  -- Configure gopls with Bazel support
+  -- {
+  --   "neovim/nvim-lspconfig",
+  --   opts = {
+  --     servers = {
+  --       gopls = {
+  --         settings = {
+  --           gopls = {
+  --             -- Enable Bazel support
+  --             buildFlags = { "-tags=bazel" },
+  --             -- Exclude Bazel build directories from workspace
+  --             directoryFilters = {
+  --               "-bazel-bin",
+  --               "-bazel-out",
+  --               "-bazel-testlogs",
+  --               "-bazel-*",
+  --             },
+  --             -- Use gopackagesdriver for Bazel integration
+  --             env = {
+  --               GOPACKAGESDRIVER = vim.fn.getcwd() .. "/tools/gopackagesdriver.sh",
+  --             },
+  --             -- Additional settings for better Bazel integration
+  --             ["formatting.gofumpt"] = true,
+  --             ["ui.completion.usePlaceholders"] = true,
+  --             ["ui.diagnostic.staticcheck"] = true,
+  --             ["ui.semanticTokens"] = true,
+  --           },
+  --         },
+  --         -- Set environment variables for gopls
+  --         cmd_env = {
+  --           GOPACKAGESDRIVER = vim.fn.getcwd() .. "/tools/gopackagesdriver.sh",
+  --         },
+  --       },
+  --     },
+  --   },
+  -- },
+  --
+  -- -- Ensure Go tools are available through Mason
+  -- {
+  --   "williamboman/mason.nvim",
+  --   opts = {
+  --     ensure_installed = {
+  --       "gopls",
+  --       "goimports",
+  --       "gofumpt",
+  --       "gomodifytags",
+  --       "impl",
+  --       "delve",
+  --     },
+  --   },
+  -- },
+}
+

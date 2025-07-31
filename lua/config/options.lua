@@ -8,7 +8,8 @@ vim.opt.autoread = true -- Auto-read files when changed outside Neovim
 -- Additional options from old config
 vim.opt.wrap = false -- Disable line wrapping
 vim.opt.swapfile = false -- Disable swap files
-vim.opt.smartcase = true -- Smart case searching
+vim.o.ignorecase = true
+vim.o.smartcase = true
 vim.opt.clipboard = "unnamedplus" -- Use system clipboard
 
 -- Disable smooth scrolling animation

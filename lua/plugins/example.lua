@@ -126,6 +126,7 @@ return {
         "javascript",
         "json",
         "lua",
+        "pkl",
         "markdown",
         "markdown_inline",
         "python",
