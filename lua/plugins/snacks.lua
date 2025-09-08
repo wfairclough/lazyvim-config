@@ -9,5 +9,9 @@ return {
     },
     input = { enabled = false },
     words = { enabled = false },
+    -- picker = {
+    --   enabled = true,
+    --   preview = { enabled = false },
+    -- },
   },
 }

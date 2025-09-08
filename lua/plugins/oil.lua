@@ -49,6 +49,7 @@ return {
       ["gx"] = "actions.open_external",
       ["g."] = "actions.toggle_hidden",
       ["g\\"] = "actions.toggle_trash",
+      ["H"] = "actions.toggle_hidden",
     },
     use_default_keymaps = true,
     view_options = {
@@ -113,3 +114,4 @@ return {
     { "<leader>-", "<CMD>Oil --float<CR>", desc = "Open parent directory in floating window" },
   },
 }
+
