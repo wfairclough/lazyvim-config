@@ -166,6 +166,12 @@ vim.keymap.set("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buff
 vim.keymap.set("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 vim.keymap.set("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Delete buffer" })
 vim.keymap.set("n", "<leader>X", "<cmd>bdelete!<cr>", { desc = "Delete buffer (force)" })
+vim.keymap.set("n", "<leader>bs", function()
+  require("telescope.builtin").lsp_document_symbols()
+end, { desc = "Buffer symbols (LSP)" })
+vim.keymap.set("n", "<leader>br", function()
+  require("telescope.builtin").lsp_references()
+end, { desc = "Buffer references (LSP)" })
 
 -- Diagnostics
 vim.keymap.set("n", "<leader>dd", "<cmd>lua vim.diagnostic.open_float()<CR>", { desc = "Open diagnostic" })
